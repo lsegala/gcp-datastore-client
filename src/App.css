@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .App-logo {
@@ -36,4 +36,33 @@
   100% {
     transform: translateY(0px)
   }
+}
+
+.form {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.form input{
+  width: 90%;
+}
+
+.form div.p-chips {
+  width: 90%;
+}
+
+.form ul.p-inputtext {
+  width: 100%;
+}
+
+.form textarea {
+  width: 90%;
+}
+
+.form div.buttons > button{
+  margin-left: 15px;
+}
+
+.form div.buttons > button:first-child{
+  margin-left: 0;
 }

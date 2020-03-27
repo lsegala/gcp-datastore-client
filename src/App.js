@@ -1,58 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { PureComponent } from 'react';
+import VisibleCasesList from './containers/VisibleCasesList';
+import MainMenu from './containers/MainMenu';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 import './App.css';
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import { connect } from 'react-redux';
+import { Growl } from 'primereact/growl';
+import Case from './containers/Case';
+import Login from './containers/Login';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
+class App extends PureComponent {
+  constructor(props){
+    super();
+    let isAuthenticated = false;
+    if (localStorage.getItem('token_app')) {
+      isAuthenticated = true;
+    }
+    this.state = {
+      authenticated: isAuthenticated
+    };
+  }
+
+  static getDerivedStateFromProps(props, state){
+    if(state.growl && props.messages && props.messages.messages && props.messages.messages.length > 0){
+      state.growl.show(props.messages.messages);
+    }
+    return null;
+  }
+
+  render(){
+    return (
+      <Router>
+        <div className="App">
+          <MainMenu authenticated={this.state.authenticated}/>
+          <Growl ref={(el) => this.setState({growl: el})}/>
+          <div className="p-grid">
+            <div className="p-col-12">
+              <Switch>
+                <Route path="/cases/list">
+                  <VisibleCasesList/>
+                </Route>
+                <Route path="/cases/new">
+                  <Case/>
+                </Route>
+                <Route path="/login">
+                  <Login/>
+                </Route>
+                <Route path="/">
+                  <h2>Bem vindo!</h2>
+                  {!this.state.authenticated && (
+                    <h3>Realize o seu Login!</h3>
+                  )}
+                </Route>
+              </Switch>
+            </div>
+          </div>
+        </div>
+      </Router>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  messages: state.messages
+});
+
+export default connect(mapStateToProps)(App);

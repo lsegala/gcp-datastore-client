@@ -11,6 +11,12 @@ export const loadCases = () => {
     });
 };
 
+export const deleteCase = (id) => {
+    return http.delete(`${API_BASE_URL}/casos/${id}`, {
+        headers: {'Authorization': 'Bearer '+localStorage.getItem('token_app')}
+    });
+}
+
 const cases = (state = [], action) => {
     switch(action.type){
         case `${ACTIONS.LOAD_CASES}_FULFILLED`:

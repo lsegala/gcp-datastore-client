@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Component } from 'react';
-import { loadCases } from '../reducers/cases';
+import { loadCases, deleteCase } from '../reducers/cases';
 import { DataTable, Column} from 'primereact/datatable';
-import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
+import { Button } from 'primereact/button';
 
 class CaseList extends Component {
     constructor() {
@@ -19,12 +19,17 @@ class CaseList extends Component {
             });
     }
 
-    actionBodyTemplate() {
+    actionBodyTemplate(row) {
         return (
             <React.Fragment>
-                <Link to="">Alterar</Link>
-                |
-                <Link to="">Excluir</Link>
+                <Button icon="pi pi-trash" onClick={() => {
+                    deleteCase(row.id)
+                    .then(response => {
+                        window.location.reload();
+                    });
+                }}/>
+                &nbsp;
+                <Button icon="pi pi-pencil"/>
             </React.Fragment>
         );
     }

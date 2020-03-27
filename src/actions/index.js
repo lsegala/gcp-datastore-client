@@ -9,6 +9,18 @@ export const ACTIONS = {
     LOAD_CASES: 'LOAD_CASES'
 }
 
+export function acessoToBoolean (acessoStr = '') {
+    return acessoStr === 'PUB';
+}
+
+export function acessoToEnum (acessoStr = false) {
+    return acessoStr ? 'PUB' : 'PRI';
+}
+
+export function acessoToString (acessoStr = '') {
+    return acessoStr === 'PUB' ? 'Público' : 'Privado';
+}
+
 //action
 export const showMessage = (message) => ({
     type: ACTIONS.SHOW_MESSAGE,

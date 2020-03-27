@@ -12,6 +12,7 @@ const CaseForm = state => {
     const [title, setTitle] = useState(state.form.title);
     const [labels, setLabels] = useState(state.form.labels);
     const [description, setDescription] = useState(state.form.description);
+    const [observation, setObservation] = useState(state.form.description);
     const [owner, setOwner] = useState(state.form.owner);
     const [access, setAccess] = useState(state.form.access);
     const [inclusionDate, setInclusionDate] = useState(state.form.inclusionDate);
@@ -72,6 +73,17 @@ const CaseForm = state => {
                                 }}/>
             </div>
             <div className="p-col-12">
+                <h3>Observações</h3>
+            </div>
+            <div className="p-col-12">
+                <InputTextarea  rows={5} cols={30}  
+                                value={observation} 
+                                onChange={(e) => {
+                                    setObservation(e.target.value);
+                                    state.form.observation = e.target.value;
+                                }}/>
+            </div>
+            <div className="p-col-12">
                 <h3>Responsável</h3>
             </div>
             <div className="p-col-12">
@@ -85,7 +97,7 @@ const CaseForm = state => {
                 <h3>Público?</h3>
             </div>
             <div className="p-col-12">
-                <InputSwitch    checked={access === 'P'} 
+                <InputSwitch    checked={access} 
                                 onChange={(e) => {
                                     setAccess(e.target.value);
                                     state.form.access = e.target.value;

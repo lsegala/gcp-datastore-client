@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { showGrowl, ACTIONS, API_BASE_URL } from '../actions';
+import { showGrowl, acessoToEnum, ACTIONS, API_BASE_URL } from '../actions';
 
 const http = axios.create({
     baseURL : API_BASE_URL
@@ -10,14 +10,15 @@ export const addCase = (form) => {
         dispatch({
             type: ACTIONS.ADD_CASE,
             payload: http.post(`${API_BASE_URL}/casos`, {
-                acesso: form.access,
+                acesso: acessoToEnum(form?.access),
                 clientes: form.clients,
                 dataCriacao: form.inclusionDate,
                 descricao: form.description,
-                //observacoes: ,
+                observacoes: form.observation,
                 pasta: form.folder,
                 responsavel: form.owner,
-                titulo: form.title
+                titulo: form.title,
+                etiqueta: form.labels
             }, {
                 headers: { 'Authorization': 'Bearer '+localStorage.getItem('token_app') }
             })

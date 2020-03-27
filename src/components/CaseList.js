@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Component } from 'react';
 import { loadCases, deleteCase } from '../reducers/cases';
 import { DataTable, Column} from 'primereact/datatable';
-import { Link } from 'react-router-dom';
+import { acessoToString, acessoToEnum } from '../actions';
 import { Button } from 'primereact/button';
 
 class CaseList extends Component {
@@ -24,13 +24,19 @@ class CaseList extends Component {
             <React.Fragment>
                 <Button icon="pi pi-trash" onClick={() => {
                     deleteCase(row.id)
-                    .then(response => {
+                    .then(() => {
                         window.location.reload();
                     });
                 }}/>
                 &nbsp;
                 <Button icon="pi pi-pencil"/>
             </React.Fragment>
+        );
+    }
+
+    handleAccessColumn(row) {
+        return (
+            <div>{acessoToString(row.acesso)}</div>
         );
     }
 
@@ -41,7 +47,7 @@ class CaseList extends Component {
                 <Column field="clientes" header="Clientes" sortable filter filterMatchMode="contains"/>
                 <Column field="titulo" header="Título" sortable filter filterMatchMode="contains"/>
                 <Column field="responsavel" header="Responsável" sortable filter filterMatchMode="contains"/>
-                <Column field="acesso" header="Acesso" sortable filter filterMatchMode="contains"/>
+                <Column body={this.handleAccessColumn} header="Acesso" sortable filter filterMatchMode="contains"/>
                 <Column body={this.actionBodyTemplate} headerStyle={{width: '8em', textAlign: 'center'}} bodyStyle={{textAlign: 'center', overflow: 'visible'}}/>
             </DataTable>
         );

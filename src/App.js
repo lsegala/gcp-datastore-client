@@ -49,6 +49,10 @@ class App extends PureComponent {
                 <Route path="/cases/new">
                   <Case/>
                 </Route>
+                <Route  path="/cases/edit/:id"
+                        render={(props) => 
+                          <Case {...props}/>
+                        }/>
                 <Route path="/login">
                   <Login/>
                 </Route>

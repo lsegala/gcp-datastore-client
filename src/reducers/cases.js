@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { showGrowl, ACTIONS, API_BASE_URL } from '../actions';
+import { ACTIONS, API_BASE_URL } from '../actions';
 
 const http = axios.create({
     baseURL : API_BASE_URL

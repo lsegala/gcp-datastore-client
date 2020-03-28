@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Chips } from 'primereact/chips';
@@ -7,19 +7,44 @@ import { InputSwitch } from 'primereact/inputswitch';
 import { Calendar } from 'primereact/calendar';
 
 const CaseForm = state => {
-    const [folder, setFolder] = useState(state.form.folder);
-    const [clients, setClients] = useState(state.form.clients);
-    const [title, setTitle] = useState(state.form.title);
-    const [labels, setLabels] = useState(state.form.labels);
-    const [description, setDescription] = useState(state.form.description);
-    const [observation, setObservation] = useState(state.form.description);
-    const [owner, setOwner] = useState(state.form.owner);
-    const [access, setAccess] = useState(state.form.access);
-    const [inclusionDate, setInclusionDate] = useState(state.form.inclusionDate);
+    const [id, setId] = useState(state.match?.params?.id);
+    const [folder, setFolder] = useState('');
+    const [clients, setClients] = useState('');
+    const [title, setTitle] = useState('');
+    const [labels, setLabels] = useState([]);
+    const [description, setDescription] = useState('');
+    const [observation, setObservation] = useState('');
+    const [owner, setOwner] = useState('');
+    const [access, setAccess] = useState(false);
+    const [inclusionDate, setInclusionDate] = useState(new Date());
+    useEffect(()=>{
+        setId(state.match?.params?.id);
+        setFolder(state.form.folder);
+        setClients(state.form.clients);
+        setTitle(state.form.title);
+        setLabels(state.form.labels);
+        setDescription(state.form.description);
+        setObservation(state.form.observation);
+        setOwner(state.form.owner);
+        setAccess(state.form.access);
+        setInclusionDate(state.form.inclusionDate);
+    }, [
+        state.match,
+        state.form.folder, 
+        state.form.clients,
+        state.form.title,
+        state.form.labels,
+        state.form.description,
+        state.form.observation,
+        state.form.owner,
+        state.form.access,
+        state.form.inclusionDate
+    ]);
     return (
         <div className="p-grid form">
             <div className="p-col-12">
-                <h1>Formulário</h1>
+                {id && (<h1>Alterar Caso {id}</h1>)}
+                {!id && (<h1>Incluir Caso</h1>)}
             </div>
             <div className="p-col-12">
                 <h3>Pasta</h3>

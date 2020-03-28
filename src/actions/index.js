@@ -6,7 +6,9 @@ export const ACTIONS = {
     UPD_CASE: 'UPD_CASE',
     DO_LOGIN: 'DO_LOGIN',
     LOGIN: 'LOGIN',
-    LOAD_CASES: 'LOAD_CASES'
+    LOAD_CASES: 'LOAD_CASES',
+    LOAD_CASE: 'LOAD_CASE',
+    NEW_CASE: 'NEW_CASE'
 }
 
 export function acessoToBoolean (acessoStr = '') {

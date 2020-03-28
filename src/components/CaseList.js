@@ -1,8 +1,9 @@
-import React, { useEffect, useState, Component } from 'react';
+import React, { Component } from 'react';
 import { loadCases, deleteCase } from '../reducers/cases';
 import { DataTable, Column} from 'primereact/datatable';
-import { acessoToString, acessoToEnum } from '../actions';
+import { acessoToString } from '../actions';
 import { Button } from 'primereact/button';
+import { Link } from 'react-router-dom';
 
 class CaseList extends Component {
     constructor() {
@@ -29,7 +30,9 @@ class CaseList extends Component {
                     });
                 }}/>
                 &nbsp;
-                <Button icon="pi pi-pencil"/>
+                <Link to={`/cases/edit/${row.id}`}>
+                    <Button icon="pi pi-pencil"/>
+                </Link>
             </React.Fragment>
         );
     }

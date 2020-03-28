@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { showGrowl, acessoToEnum, ACTIONS, API_BASE_URL } from '../actions';
+import { showGrowl, acessoToEnum, acessoToBoolean, ACTIONS, API_BASE_URL } from '../actions';
 
 const http = axios.create({
     baseURL : API_BASE_URL
@@ -25,7 +25,6 @@ export const addCase = (form) => {
         })
         .then(response => response?.value)
         .then(response => {
-            console.log(response);
             if(response?.status === 200){
                 dispatch(showGrowl({severity: 'success', summary: 'Sucesso', detail: 'Caso adicionado com sucesso!'}));
             }else{
@@ -37,22 +36,57 @@ export const addCase = (form) => {
     }
 };
 
+export const loadCase = (id) => {
+    return (dispatch) => {
+        dispatch({
+            type: ACTIONS.LOAD_CASE,
+            payload: http.get(`${API_BASE_URL}/casos/${id}`, {
+                headers: { 'Authorization': 'Bearer '+localStorage.getItem('token_app') }
+            })
+        })
+        .catch(() => {
+            dispatch(showGrowl({severity: 'error', summary: 'Erro', detail: 'Erro de comunicação com o serviço!'}))
+        });
+    }
+};
+
+export const newCase = () => {
+    return (dispatch) => {
+        dispatch({
+            type: ACTIONS.NEW_CASE
+        });
+    }
+}
+
 const caseReducer = (state = {}, action) => {
     switch(action.type){
         case `${ACTIONS.ADD_CASE}_FULFILLED`:
-            console.log('caso fulfilled');
             return state;
-        case 'UPD_CASE':
+        case `${ACTIONS.LOAD_CASE}_FULFILLED`:
             return {
-                id: action.id,
-                folder: action.folder,
-                clients: action.clients,
-                title: action.title,
-                labels: action.labels,
-                description: action.description,
-                owner: action.owner,
-                access: action.access,
-                inclusionDate: action.inclusionDate
+                id: action.payload?.data?.id,
+                folder: action.payload?.data?.pasta,
+                clients: action.payload?.data?.clientes,
+                title: action.payload?.data?.titulo,
+                labels: action.payload?.data?.etiqueta,
+                description: action.payload?.data?.descricao,
+                observation: action.payload?.data?.observacoes,
+                owner: action.payload?.data?.responsavel,
+                access: acessoToBoolean(action.payload?.data?.acesso),
+                inclusionDate: new Date(action.payload?.data?.dataCriacao)
+            };
+        case ACTIONS.NEW_CASE:
+            return {
+                id: null,
+                folder: '',
+                clients: '',
+                title: '',
+                labels: [],
+                description: '',
+                observation: '',
+                owner: '',
+                access: acessoToBoolean(false),
+                inclusionDate: new Date()
             };
         default:
             return {
@@ -62,7 +96,7 @@ const caseReducer = (state = {}, action) => {
                 labels: [],
                 description: '',
                 owner: '',
-                access: '',
+                access: false,
                 inclusionDate: new Date()
             };
     }

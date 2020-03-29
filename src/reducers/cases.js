@@ -40,7 +40,14 @@ export const deleteCase = (id) => {
 const cases = (state = {}, action) => {
     switch(action.type){
         case `${ACTIONS.LOAD_CASES}_FULFILLED`:
-            return action.payload.data;
+            return action.payload.data
+            .map(r => {
+                return {
+                    ...r,
+                    inclusionDate: new Date(r.dataCriacao),
+                    etiquetas: r.etiqueta.join()
+                };
+            });
         default:
             return state;
     }

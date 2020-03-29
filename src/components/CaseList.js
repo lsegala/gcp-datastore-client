@@ -24,22 +24,37 @@ const CaseList = (state) => {
             <div>{acessoToString(row.acesso)}</div>
         );
     };
+    let handleDescColumn = (row) => {
+        return (
+            <div>{row.descricao?.length > 10 ? row.descricao.substring(0, 10) + '...' : row.descricao}</div>
+        );
+    };
+    let handleDateColumn = (row) => {
+        return (
+            <div>{row.inclusionDate?.toLocaleDateString()}</div>
+        );
+    };
     let header = (
-        <span className="p-float-label p-inputgroup" style={{margin: '10px 0'}}>
-            <InputText id="searchField" type="text" onInput={(e) => setSearchField(e.target.value)}/>
-            <Button icon="pi pi-search" onClick={(e) => setGlobalFilter(searchField)}/>
-            <label htmlFor="searchField">Busca</label>
-        </span>
+        <div style={{textAlign: 'left'}}>
+            <div className="p-float-label p-inputgroup" style={{margin: '10px 0'}}>
+                <InputText id="searchField" type="text" onInput={(e) => setSearchField(e.target.value)}/>
+                <Button icon="pi pi-search" onClick={(e) => setGlobalFilter(searchField)}/>
+                <label htmlFor="searchField">Busca</label>
+            </div>
+        </div>
     );
     return (
         <div className="p-grid form">
             <div className="p-col-12">
                 <DataTable  value={state.cases} emptyMessage="Nenhum caso castrado ainda!" header={header} globalFilter={globalFilter}>
-                    <Column field="pasta" header="Pasta" sortable filter filterMatchMode="contains"/>
-                    <Column field="clientes" header="Clientes" sortable filter filterMatchMode="contains"/>
-                    <Column field="titulo" header="Título" sortable filter filterMatchMode="contains"/>
+                    <Column body={handleDateColumn} header="Dt. Inclusão" sortable/>
+                    <Column field="pasta" header="Pasta" sortable/>
+                    <Column field="clientes" header="Clientes" sortable/>
+                    <Column field="titulo" header="Título" sortable/>
+                    <Column body={handleDescColumn} header="Descrição" sortable/>
+                    <Column field="etiquetas" header="Etiquetas" sortable/>
                     <Column field="responsavel" header="Responsável" sortable/>
-                    <Column body={handleAccessColumn} header="Acesso" sortable filter filterMatchMode="contains"/>
+                    <Column body={handleAccessColumn} header="Acesso" sortable/>
                     <Column body={actionBodyTemplate} headerStyle={{width: '8em', textAlign: 'center'}} bodyStyle={{textAlign: 'center', overflow: 'visible'}}/>
                 </DataTable>
             </div>

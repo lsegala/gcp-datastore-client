@@ -30,28 +30,23 @@ const CaseForm = state => {
     const [access, setAccess] = useState(initialState.access);
     const [inclusionDate, setInclusionDate] = useState(initialState.inclusionDate);
     useEffect(()=>{
-        let id = state.match?.params?.id;
-        setId(id);
-        setFolder(id? state.form.folder : initialState.folder);
-        setClients(id? state.form.clients : initialState.clients);
-        setTitle(id? state.form.title : initialState.title);
-        setLabels(id? state.form.labels : initialState.labels);
-        setDescription(id? state.form.description : initialState.description);
-        setObservation(id? state.form.observation : initialState.observation);
-        setOwner(id? state.form.owner : initialState.owner);
-        setAccess(id? state.form.access : initialState.access);
-        setInclusionDate(id? state.form.inclusionDate : initialState.inclusionDate);
+        let idParam = state.match?.params?.id;
+        if(id !== idParam || idParam){
+            setId(idParam);
+            setFolder(idParam? state.form.folder : initialState.folder);
+            setClients(idParam? state.form.clients : initialState.clients);
+            setTitle(idParam? state.form.title : initialState.title);
+            setLabels(idParam? state.form.labels : initialState.labels);
+            setDescription(idParam? state.form.description : initialState.description);
+            setObservation(idParam? state.form.observation : initialState.observation);
+            setOwner(idParam? state.form.owner : initialState.owner);
+            setAccess(idParam? state.form.access : initialState.access);
+            setInclusionDate(idParam? state.form.inclusionDate : initialState.inclusionDate);
+        }
     }, [
         state.match,
-        state.form.folder, 
-        state.form.clients,
-        state.form.title,
-        state.form.labels,
-        state.form.description,
-        state.form.observation,
-        state.form.owner,
-        state.form.access,
-        state.form.inclusionDate
+        id,
+        state.form
     ]);
     return (
         <div className="p-grid form">
@@ -154,11 +149,8 @@ const CaseForm = state => {
             </div>
             <div className="p-col-12">&nbsp;</div>
             <div className="p-col-12 buttons">
-                <Button label="Salvar" 
-                        onClick={() => { 
-                            state.addCase(state.form);
-                            state.showMessage({life: 2000, severity: 'success', summary: 'Sucesso!', detail: 'Caso cadastrado!' });
-                        }}/>
+                <Button label={!id? "Criar" : "Alterar"}
+                        onClick={() => !id? state.addCase(state.form) : state.updCase(state.form)}/>
                 {!id && (
                 <Button label="Limpar" 
                         className="p-button-secondary"

@@ -8,7 +8,8 @@ export const ACTIONS = {
     LOGIN: 'LOGIN',
     LOAD_CASES: 'LOAD_CASES',
     LOAD_CASE: 'LOAD_CASE',
-    NEW_CASE: 'NEW_CASE'
+    NEW_CASE: 'NEW_CASE',
+    DELETE_CASE: 'DELETE_CASE'
 }
 
 export function acessoToBoolean (acessoStr = '') {
@@ -32,16 +33,6 @@ export const showMessage = (message) => ({
 export function showGrowl(message) {
     return showMessage(message);
 };
-
-export const addCase = caseObj => ({
-    type: ACTIONS.ADD_CASE,
-    caseObj
-});
-
-export const updCase = caseObj => ({
-    type: ACTIONS.UPD_CASE,
-    caseObj
-});
 
 export const doLogin = (obj) => ({
     type: ACTIONS.DO_LOGIN,

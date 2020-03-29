@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { showGrowl } from '../actions';
-import { addCase, loadCase, newCase } from '../reducers/case';
+import { addCase, loadCase, newCase, updCase } from '../reducers/case';
 import CaseForm from '../components/CaseForm';
 
 class Case extends Component {
@@ -25,9 +24,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     addCase: (form) => dispatch(addCase(form)),
+    updCase: (form) => dispatch(updCase(form)),
     loadCase: (id) => dispatch(loadCase(id)),
-    newCase: () => dispatch(newCase()),
-    showMessage: (obj) => dispatch(showGrowl(obj))
+    newCase: () => dispatch(newCase())
 });
 
 export default connect(
